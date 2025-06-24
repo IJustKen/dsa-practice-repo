@@ -1,5 +1,7 @@
 #Calculate the sum of the elements of nums between indices left and right inclusive where left <= right.
 
+#WE DOING PREFIX SUM CUZ MULTIPLE QUERIES OF SUMMING OVER LIST HAVE BEEN ASKED
+#Only one or two queries we could have written the usual way iterating left to right
 class NumArray:
 
     def __init__(self, nums: List[int]):
