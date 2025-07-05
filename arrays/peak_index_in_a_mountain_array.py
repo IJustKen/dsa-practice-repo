@@ -31,8 +31,6 @@ class Solution:
                     high = mid-1
                 
 
-                
-   \
             
 
 
