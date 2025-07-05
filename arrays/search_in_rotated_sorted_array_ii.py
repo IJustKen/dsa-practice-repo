@@ -19,12 +19,12 @@ class Solution:
                 l = mid+1
             elif nums[mid] == nums[r]:    #same logic, search left
                 r = mid-1
-            elif nums[mid] >= nums[l]:    #this is the same as earlier but we remove the condition of "or target > nums[r]"
+            elif nums[mid] >= nums[l]:    #this is the same as ealier logic of left partition is sorted
                 if (nums[mid] > target and target >= nums[l]):
                     r = mid-1
                 else:
                     l = mid+1
-            elif nums[mid]<= nums[r]:    #similar here
+            elif nums[mid]<= nums[r]:    #similar here but right is sorted
                 if (nums[mid]< target and target<=nums[r]):
                     l = mid+1
                 else:
