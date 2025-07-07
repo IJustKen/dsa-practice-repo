@@ -22,10 +22,10 @@ class Solution:
             if s > target or idx >=len(candidates):
                 return
             
-            combo.append(candidates[idx])        #option 1 choose to add
+            combo.append(candidates[idx])        #option 1 choose to add, then next addition can be again idx itself as repetition allowed
             combinator(idx,combo,s+candidates[idx])
 
-            combo.pop()            #option 2 you did not add but are checking if the next one can be added
+            combo.pop()            #option 2 you did not add curr but are checking if the next one can be added
             combinator(idx+1,combo,s)
         
         combinator(0,[],0)
