@@ -1,8 +1,5 @@
 #Given the head of a linked list, return the list after sorting it in ascending order.
 
-
-
-
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -37,13 +34,13 @@ class Solution:
             return head
         slow, fast = head,head      #slow and fast pointers for detecting middle
         prev = None
-        while fast and fast.next:
+        while fast and fast.next:            #detecting middle
             prev = slow
             slow = slow.next
             fast = fast.next.next
         prev.next = None
-        left = self.sortList(head)
-        right = self.sortList(slow)
+        left = self.sortList(head)            #left half sort
+        right = self.sortList(slow)            #right half sort
         return self.merge(left,right)
 
         
