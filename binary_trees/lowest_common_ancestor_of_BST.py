@@ -5,6 +5,26 @@
 #         self.left = None
 #         self.right = None
 
+#this is the more optimized memory efficient one i wrote afterwards, first sol is beneath this one
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        #logic is we start from root, wherever the path changes for either of the searches we stop and return it as
+        #LCA
+        curr = root
+        flag = True      #flag to mark that the search for p and q is going together
+        while flag:            
+            if curr.val > p.val and curr.val > q.val:        #means both p and q in same direction from here
+                curr = curr.left
+                continue
+            if curr.val < p.val and curr.val < q.val:        #p and q in same direction from here
+                curr = curr.right
+                continue
+            if curr.val == p.val and curr.val == q.val:        #both coincide actually doesnt exist but ok
+                return curr
+            else:                                        #anything else means p and q in different directions which means this must be the LCA rn
+                                                        #so we break and return the curr node
+                flag = False
+        return curr
 #kinda bruteforce ish this one fine the path for both then go backwards and see where they first meet
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
