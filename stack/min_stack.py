@@ -22,3 +22,28 @@ class MinStack:
 
     def getMin(self) -> int:
         return self.curr
+
+# FASTER METHOD: keep 2 stacks, one tracks the actual stack and one tracks the minimums
+class MinStack:
+    def __init__(self):
+        self.stack = list()
+        self.minstack = list()
+
+    def push(self, value: int) -> None:
+        self.stack.append(value)
+        # consider equal to case as well, as imagine pushing 0,1,0 will push two minimums which are 0,0
+        # so we cannot just keep one of em in the minstack as popping the last 0 will pop the only 0 in the minstack
+        # even though the first 0 remains in the actual stack and is the min
+        if not self.minstack or self.minstack[-1] >= value:
+            self.minstack.append(value)
+
+    def pop(self) -> None:
+        if self.stack.pop() == self.minstack[-1]:
+            self.minstack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1]
+
+    def getMin(self) -> int:
+        return self.minstack[-1]
+
