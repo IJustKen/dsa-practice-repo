@@ -12,3 +12,15 @@ class Solution:
                 answer[idx] = i - idx
             stack.append((temperatures[i], i))
         return answer
+
+# A better alternative: Only store the indices in the stack. Check the value of the stack's top index by 
+# doing temperatures[stack[-1]]
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        answer = [0]*len(temperatures)
+        stack = []
+        for i in range(len(temperatures)):
+            while len(stack) != 0 and temperatures[stack[-1]] < temperatures[i]:
+                idx = stack.pop()
+                answer[idx] = i - idx
+            stack.append(i)
+        return answer
