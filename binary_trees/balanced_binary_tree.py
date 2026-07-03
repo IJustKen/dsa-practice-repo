@@ -30,6 +30,32 @@ class Solution:
             return True
         else:
             return False
+
+# ALTERNATE WITHOUT AN EXPLICIT FLAG
+# here we pass a -1 up the recursive tree if imbalance is found
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        def height(node):
+            if not node:
+                return 0
+            left = height(node.left)
+            right = height(node.right)
+
+            if left == -1 or right == -1:
+              # pass the imbalance up the recursive tree
+                return -1
+                
+            if abs(left-right) > 1:
+              # case when left and right subtree do not satisfy balanced property
+                return -1
+              
+            return 1 + max(left, right)  # normal case, to calculate height
+        
+        if height(root) == -1:
+            return False
+        return True
+
+
         
         
         
