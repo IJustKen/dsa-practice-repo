@@ -21,3 +21,20 @@ class Solution:
                 leader_finish_time = curr_finish_time  # otherwise if it cannot reach, it won't be part of the fleet in front of it, rather it is itself a fleet leader now
         
         return res
+
+# Stack approach (takes a stack to track fleets), basically whenever a new fleet leader is discovered we push it to the stack that is all
+# previous approach actually faster cuz we are just maintaining the one variable leader finish time.
+class Solution:
+    def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
+        cars = list(zip(position, speed))
+        cars.sort()
+
+        fleets = [cars[-1]]    # tracks number of fleets leaders, thus number of fleets
+
+        for i in range(len(speed)-2,-1,-1):
+            curr_finish_time = (target - cars[i][0])/cars[i][1]
+            leader_finish_time = (target - fleets[-1][0])/fleets[-1][1]    # current fleet leader is the latest pushed car in the fleets stack
+            if curr_finish_time > leader_finish_time:
+                fleets.append(cars[i])
+        
+        return len(fleets)
