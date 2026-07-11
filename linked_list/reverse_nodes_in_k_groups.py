@@ -3,64 +3,50 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
-
-
-#Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
-#k is a positive integer and is less than or equal to the length of the linked list. 
-#If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.
-#You may not alter the values in the list's nodes, only nodes themselves may be changed.
-
-
 class Solution:
-    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]: 
-      
-        def revpossible(n):      #helper 
-            #to check if remaining linked list has at least k elements or not
-            #if not then we dont have to reverse this part hence we need to know          
-            i = 0
-            while n:
-                n = n.next
-                i += 1
-            if k <= i:
-                return True
+    def reverse(self, node, count):
+        # I ONLY CALL THIS IF K NODES ARE AVAILABLE ELSE NOPE DO NOT CALL THIS
+        # returns start, end of the reversed node up to k nodes starting from node
+        # also returns the next node in original sequence
+        if not node:
+            return None, None
+        prev = None
+        nxt = None
+        last = node
+        curr = node
+        while count>0:
+            temp = curr.next
+            curr.next = prev
+            prev = curr
+            curr = temp
+            count -= 1
+        start = prev    # renaming to understand but yeah logically prev and curr are the start of reversed list, and the next element of original list
+        nxt = curr    # since we disconnected this sub part from original list, we need the new head of the original list, which is this
+        
+        return start, last, nxt
+        
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        new_head = ListNode()    # starting boundary of new list
+        res_curr = new_head    # curr tracker for this result list
+
+        curr = head    # curr tracker of OG list
+        start = curr    # this is to track the starting node of a k (or less than k) length sub part
+        counter = 0    # to track how many elements till now
+        
+        while curr:
+            counter += 1    # increment number of nodes seen till now
+            if counter == k:    # if we got k nodes, only now call reverse helper function
+                n1, n2, nxt = self.reverse(start, k)    # get the start, end of reversed list, and the new head of original list
+                res_curr.next = n1    # link result list to start
+                res_curr = n2    # jump result curr pointer to the last node in result list, which is the end of the reversed sub sequence
+                curr = nxt    # new head
+                start = curr    # this may be the start of a k length sub list now
+                counter = 0
             else:
-                return False
-              
-        if revpossible(head):          #i reverse the first group
-            prev_k_first = head        #first elem of the previous k size group after revsersing
-            prev = None
-            curr = head
-            for i in range(k):            #only up to k elements
-                temp = curr.next
-                curr.next = prev
-                prev = curr
-                curr = temp
-            new_head = prev
-        else:
-            return head
-          
-        #what happens is this is now disconnected from the rest, so we gotta logically connect it
-        while revpossible(curr):
-            prev = None                  #to treat each k size group separately
-            for i in range(k):
-                if i == 0:
-                    first = curr
-                temp = curr.next
-                curr.next = prev
-                prev = curr
-                curr = temp
+                curr = curr.next    # just move forward
+        
+        if counter > 0:    # after everything if counter is non zero, it means in the end, we could not find a sub sequence of length k, only less than that
+            if start:    # thus if that is the case, just link it directly without reversing
+                res_curr.next = start
 
-            prev_k_first.next = prev        #this step connects the previous reversed group to current
-            prev_k_first = first            #update prev_k_first with first of the curr group
-
-        if curr:
-            prev_k_first.next = curr      #if any remaining nodes (less than k) then just connect as is
-        return new_head                  #the new head is actually the last node of the very first group
-        
-
-            
-        
-        
-        
-
-        
+        return new_head.next    # return boundary.next as new head
