@@ -2,6 +2,46 @@
 #The word can be constructed from letters of sequentially adjacent cells, where 
 #adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
 
+
+# faster solution since we do not use any extra memory for storing "seen"
+# idea is to mark visited cell with a random symbol like $ or # or something.
+# then restore it while backtracking
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        def dfs(i, j, word_idx):
+            if word_idx >= len(word):    # found the word
+                return True
+
+            if i < 0 or i >= len(board):    # base cases to quit
+                return False
+
+            if j < 0 or j >= len(board[0]):
+                return False
+
+            if board[i][j] != word[word_idx]:
+                return False
+
+            temp = board[i][j]    # store the current cell value
+            board[i][j] = "$"    # replace with random symbol to mark as visited
+
+            ans = dfs(i+1, j, word_idx+1) or dfs(i-1,j,word_idx+1) or dfs(i, j+1, word_idx+1) or dfs(i, j-1, word_idx+1)
+            # search for the word with this cell marked as seen with the $
+
+            board[i][j] = temp    # restore it so that other paths can see it unmarked
+            return ans
+        
+        res = False
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                res = res or dfs(i,j,0)
+                if res == True:    # early exit condition, saves some time
+                    return res
+        return res
+            
+
+
+
+
 class Solution:
 
     #ok so we keep track of visited cells with path
