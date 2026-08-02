@@ -1,11 +1,14 @@
 #Given a string s, partition s such that every substring of the partition is a palindrome. 
 #Return all possible palindrome partitioning of s.
 
+
+# SLOW ASF solution
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
         res = []
 
         def isPali(text):
+            # Each of these will go as O(n) calls that is kinda slow when done repeatedly
             ans = True
             for i in range(len(text)//2):
                 ans = ans and (text[i] == text[len(text)-i-1])
@@ -15,19 +18,21 @@ class Solution:
             nonlocal res
             if idx >= len(s):
                 if isPali(pali):
+                    # join will also be O(n)
                     temp.append("".join(pali.copy()))
                     res.append(temp.copy())
                     temp.pop()
                 return
 
             if not isPali(pali):
+                # O(n) call
                 pali.append(s[idx])
                 dfs(pali, temp, idx+1)
                 pali.pop()
                 return
 
             if pali:
-                temp.append("".join(pali.copy()))
+                temp.append("".join(pali.copy()))    #O(n)
                 dfs([s[idx]], temp, idx+1)
                 temp.pop()
 
@@ -51,10 +56,8 @@ class Solution:
         res = []
         part = []      #to append the palis alog one partitioning style
 
-        def isPali(s,i,j):      #helper function to check if palindrome
-            if s[i:j+1] == s[i:j+1][::-1]:
-                return True
-            return False
+        def isPali(sub):      #helper function to check if palindrome
+            return sub == sub[::-1]
 
         def dfs(i):
             nonlocal res
@@ -64,9 +67,9 @@ class Solution:
                 return
               
             for j in range(i,len(s)):    #else, like explained in sol, we keep trying substrings of increasing lengths
-                                          #starting from i going all the way to len(s)
-                if isPali(s,i,j):
-                    part.append(s[i:j+1])      #append the curr pali
+                sub = s[i:j]                          #starting from i going all the way to len(s)
+                if isPali(sub):
+                    part.append(sub)      #append the curr pali
                     dfs(j+1)                    #do dfs and look for this particular partitioning style
                     part.pop()            #remove the pali you just found to look for other way of partitioning (diff pali)
         
