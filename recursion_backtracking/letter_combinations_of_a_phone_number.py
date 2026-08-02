@@ -3,6 +3,27 @@
 
 #A mapping of digits to letters (just like on the telephone buttons)
 
+# beats 100% soln latest on me own
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        map = {2:"abc", 3:"def", 4:"ghi", 5:"jkl", 6:"mno", 7:"pqrs", 8:"tuv", 9:"wxyz"}
+        res = []
+        def dfs(temp, dig_idx):
+            nonlocal res
+            if dig_idx >= len(digits):  #Base case we completed a combo
+                res.append("".join(temp.copy()))
+                return
+            
+            curr_let = map[int(digits[dig_idx])]  # letters available for the current digit
+            for i in range(len(curr_let)):
+                temp.append(curr_let[i])  # add the letter and then go to the next digit's combos
+                dfs(temp, dig_idx+1)
+                temp.pop()  # do not add it, instead go next iteration and try to add the next letter and repeat
+            
+        dfs([], 0)
+        return res
+
+          
 
 class Solution:
 
